@@ -1,4 +1,4 @@
-                                                                     <h1> #QuickBite -- it is basically an food ordering app </h1>
+<p>                                                                        <h1>QuickBite -- it is basically an food ordering app</h1></p> 
 
 <h2>It is basically divided into to parts or logins</h2>
   
