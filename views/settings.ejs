@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QuickBite Settings</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#e9dbc6;
+    transition:0.3s;
+}
+
+.container{
+    display:flex;
+    min-height:100vh;
+}
+
+.sidebar{
+    width:250px;
+    background:#c09061;
+    color:black;
+    padding:20px;
+}
+
+.sidebar h2{
+    margin-bottom:30px;
+}
+
+.sidebar ul{
+    list-style:none;
+}
+
+.Link{
+    text-decoration: none;
+    color: black;
+}
+
+.sidebar li{
+    padding:12px;
+    cursor:pointer;
+    border-radius:8px;
+    margin-bottom:10px;
+}
+
+.sidebar li:hover{
+    background:rgba(255,255,255,0.2);
+}
+
+.content{
+    flex:1;
+    padding:30px;
+}
+
+.section{
+    background:wheat;
+    padding:20px;
+    border-radius:12px;
+    margin-bottom:20px;
+    box-shadow:0 3px 10px #c09061;
+}
+
+
+
+input,select{
+    width:90%;
+    padding:10px;
+    margin-top:8px;
+    margin-bottom:15px;
+    border:1px solid #e78f0b;
+    border-radius:8px;
+}
+
+button{
+    padding:10px 20px;
+    border:none;
+    background:whitesmoke;
+    color:black;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+button:hover{
+    opacity:0.8;
+}
+
+
+.button-container {
+  display: flex;         /* Arranges items in a row */
+  flex-direction: row;   /* Confirms horizontal layout (default) */
+  gap: 40px;             /* Creates exactly 15px of space between the buttons */
+}
+
+.button-container1 {
+  display: flex;         /* Arranges items in a row */
+  flex-direction: row;
+  justify-content: center;   /* Confirms horizontal layout (default) */
+  gap: 10%;             /* Creates exactly 15px of space between the buttons */
+}
+
+
+.profile-img{
+    width:120px;
+    height:120px;
+    border-radius:50%;
+    object-fit:cover;
+    display:block;
+    margin-bottom:15px;
+}
+.select-btn{
+    padding:12px 30px;
+    border:none;
+    border-radius:30px;
+    background:#e5e5e5;
+    color:#333;
+    font-size:16px;
+    cursor:pointer;
+    transition:all 0.3s ease;
+}
+
+/* Selected State */
+.select-btn.selected{
+    background:black;
+    color:white;
+    transform:scale(1.08);
+    box-shadow:0 5px 15px rgba(0, 0, 0, 0.4);
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="sidebar">
+    <h2>Settings</h2>
+
+    <ul>
+        <li ><a href="\api\menu" class="Link">Back To Menu</a></li>
+        <li onclick="scrollToSection('address')">Addresses</li>
+        <li onclick="scrollToSection('notifications')">Notifications</li>
+        <li onclick="scrollToSection('preferences')">Preferences</li>
+    </ul>
+</div>
+
+<div class="content">
+
+    <!-- Profile -->
+    <div class="section" id="profile">
+        <div class="button-container1">
+        <img id="preview"
+        class="profile-img"
+        src="\user.png">
+        </div>
+        <br>
+        <br>
+        
+
+
+        <input type="text"
+        id="name"
+        placeholder="Full Name">
+
+        <input type="email"
+        id="email"
+        placeholder="Email">
+
+        <input type="phone"
+        id="phone"
+        placeholder="Phone Number">
+
+
+        <button>
+            Change password
+        </button>
+    </div>
+
+    <!-- Address -->
+    <div class="section" id="address">
+        <h2>Addresses</h2>
+        <br>
+        <input type="text"
+        id="addressInput"
+        placeholder="Enter Address">
+        <br>
+        <button>
+        Add Address
+        </button>
+
+
+        <div id="addressList"
+        class="address-list"></div>
+    </div>
+
+    <!-- Notifications -->
+    <div class="section" id="notifications">
+        <h2>Notifications</h2>
+        <br>
+        <br>
+        <div class="button-container">
+        <button class="select-btn" onclick="toggleSelect(this)">
+            Order Updates
+        </button>
+        <button class="select-btn" onclick="toggleSelect(this)">
+            Promotional Offers
+        </button>
+        </div>
+
+        
+    </div>
+
+    <!-- Preferences -->
+    <div class="section" id="preferences">
+        <h2>Preferences</h2>
+        <br>
+
+
+        <button class="select-btn" onclick="toggleSelect1(this)" id="darkMode">
+            Dark Mode
+        </button>
+
+        <br>
+        <br>
+
+        <label>Language</label>
+        <br>
+        <br>
+        <div class="button-container">
+        <button class="select-btn" onclick="toggleSelect2(this)">
+            English
+        </button>
+        <button class="select-btn" onclick="toggleSelect2(this)">
+            Telugu
+        </button>
+        <button class="select-btn" onclick="toggleSelect2(this)">
+            Hindi
+        </button>
+        </div>
+        
+        
+    </div>
+<div class="button-container1">
+    <button onclick="saveSettings()">
+    Save Settings
+    </button>
+
+    <button onclick="resetSettings()">
+    Reset
+    </button>
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+function toggleSelect(button){
+
+    // Save original text only once
+    if(!button.dataset.originalText){
+        button.dataset.originalText =
+        button.innerText;
+    }
+
+    button.classList.toggle("selected");
+
+    if(button.classList.contains("selected")){
+        button.innerText =
+        "Allow " + button.dataset.originalText;
+    }
+    else{
+        button.innerText =
+        button.dataset.originalText;
+    }
+}
+
+
+function toggleSelect1(button){
+
+    // Save original text only once
+    if(!button.dataset.originalText){
+        button.dataset.originalText =
+        button.innerText;
+    }
+
+    button.classList.toggle("selected");
+
+    if(button.classList.contains("selected")){
+        button.innerText =
+        "✓ " + button.dataset.originalText;
+    }
+    else{
+        button.innerText =
+        button.dataset.originalText;
+    }
+}
+
+
+function toggleSelect2(button){
+
+    // Remove selection from all buttons
+    document.querySelectorAll(".select-btn").forEach(btn => {
+        btn.classList.remove("selected");
+        if(btn.dataset.originalText){
+            btn.innerText = btn.dataset.originalText;
+        }
+    });
+
+    // Save original text
+    if(!button.dataset.originalText){
+        button.dataset.originalText = button.innerText;
+    }
+
+    // Select clicked button
+    button.classList.add("selected");
+    button.innerText = "✓ " + button.dataset.originalText;
+}
+
+
+function scrollToSection(sectionId) {
+    document.getElementById(sectionId).scrollIntoView({
+        behavior: "smooth"
+    });
+}
+</script>
+
+</body>
+</html>
